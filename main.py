@@ -31,30 +31,16 @@ def find_trail_from_start_pos(y, x):
     check_left()
 
 
-def check_left():
+def check_up():
     global current_pos_trail_pos
     global current_pos_trail_altitude
     y, x = current_pos_trail_pos
-    if x > 0 and grid[y][x - 1] != '.':
-        if grid[y][x - 1] == current_pos_trail_altitude + 1:
-            current_pos_trail_pos = [y, x - 1]
+    if y <= 0 and grid[y][x + 1] != '.':
+        if grid[y - 1][x] == current_pos_trail_altitude + 1:
+            current_pos_trail_pos = [y - 1, x]
             current_pos_trail_altitude += 1
-            print('found trail')
-            print(current_pos_trail_pos)
-            print(current_pos_trail_altitude)
 
 
-def check_down():
-    global current_pos_trail_pos
-    global current_pos_trail_altitude
-    y, x = current_pos_trail_pos
-    if y < len(grid) and grid[y + 1][x] != '.':
-        if grid[y + 1][x] == current_pos_trail_altitude + 1:
-            current_pos_trail_pos = [y + 1, x]
-            current_pos_trail_altitude += 1
-            print('found trail')
-            print(current_pos_trail_pos)
-            print(current_pos_trail_altitude)
 
 
 def check_right():
@@ -65,22 +51,35 @@ def check_right():
         if grid[y][x + 1] == current_pos_trail_altitude + 1:
             current_pos_trail_pos = [y, x + 1]
             current_pos_trail_altitude += 1
-            print('found trail')
-            print(current_pos_trail_pos)
-            print(current_pos_trail_altitude)
 
 
-def check_up():
+def check_down():
     global current_pos_trail_pos
     global current_pos_trail_altitude
     y, x = current_pos_trail_pos
-    if y <= 0 and grid[y][x + 1] != '.':
-        if grid[y - 1][x] == current_pos_trail_altitude + 1:
-            current_pos_trail_pos = [y - 1, x]
+    if y < len(grid) - 1 and grid[y + 1][x] != '.':
+        if grid[y + 1][x] == current_pos_trail_altitude + 1:
+            current_pos_trail_pos = [y + 1, x]
             current_pos_trail_altitude += 1
-            print('found trail')
-            print(current_pos_trail_pos)
-            print(current_pos_trail_altitude)
+
+
+
+def check_left():
+    global current_pos_trail_pos
+    global current_pos_trail_altitude
+    y, x = current_pos_trail_pos
+    if x > 0 and grid[y][x - 1] != '.':
+        if grid[y][x - 1] == current_pos_trail_altitude + 1:
+            current_pos_trail_pos = [y, x - 1]
+            current_pos_trail_altitude += 1
+
+
+
+def print_pos():
+    print('found trail')
+    print(current_pos_trail_pos)
+    print(current_pos_trail_altitude)
+
 
 
 if __name__ == '__main__':
@@ -89,11 +88,20 @@ if __name__ == '__main__':
     for y in range(len(grid)):
         for x in range(len(grid[y])):
             if grid[y][x] == 0:
+                print(0)
                 current_pos = [y, x]
                 current_pos_trail_pos = [y, x]
                 while(True):
-                    check_left()
-                    check_down()
+                    check_up()
                     check_right()
+                    check_down()
+                    check_left()
+                    if current_pos_trail_altitude == 9:
+                        amount_found_trails += 1
+                        break
+
+    print('amount found trails: ', amount_found_trails)
+
+
 
 
