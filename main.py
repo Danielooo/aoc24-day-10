@@ -6,6 +6,7 @@ current_pos_trail_pos = None
 current_pos_trail_altitude = 0
 current_pos_junction = None
 current_junction_left_over_directions = []
+current_amount_directions = 0
 
 
 def read_file_to_grid(filename):
@@ -75,26 +76,30 @@ def check_left():
 
 
 def is_junction_test():
-    amount_of_directions = 0
+    global current_amount_directions
     next_altitude = current_pos_trail_altitude + 1
+    y, x = current_pos_trail_pos
+    print('curr trail pos junction test:', current_pos_trail_pos)
     # UP
     if y > 0 and grid[y - 1][x] == next_altitude:
-        amount_of_directions += 1
+        current_amount_directions += 1
     # RIGHT
     if x < len(grid[0]) - 1 and grid[y][x + 1] == next_altitude:
-        amount_of_directions += 1
+        current_amount_directions += 1
 
     # DOWN
     if y < len(grid) - 1 and grid[y + 1][x] == next_altitude:
-        amount_of_directions += 1
+        current_amount_directions += 1
 
     # LEFT
     if x > 0 and grid[y][x - 1] == next_altitude:
-        amount_of_directions += 1
+        current_amount_directions += 1
 
-    if amount_of_directions > 1:
-        print(amount_of_directions)
-        print(current_pos_trail_pos)
+    if current_amount_directions > 1:
+        print('curr amount dir: ', current_amount_directions)
+        print('cur trail pos', current_pos_trail_pos)
+    else:
+        current_amount_directions = 0
 
 
 
@@ -146,6 +151,7 @@ if __name__ == '__main__':
                 current_pos = [y, x]
                 current_pos_trail_pos = [y, x]
                 while(True):
+                    # if moved then there should be a junction test
                     is_junction_test()
                     check_up()
 
